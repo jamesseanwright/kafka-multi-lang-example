@@ -5,6 +5,7 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 import org.apache.kafka.clients.producer.ProducerRecord;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
 
@@ -21,16 +22,24 @@ public class Producer {
     private final KafkaTemplate<String, CloudEvent> kafkaTemplate;
     private final ObjectMapper objectMapper;
 
+    @Value("${application.cloudevents.type}")
+    private final String eventType;
+
+    @Value("${application.cloudevents.source}")
+    private final String eventSource;
+
+    @Value("${application.kafka.topic}")
+    private final String topic;
+
     public <T> CompletableFuture<SendResult<String, CloudEvent>> send(T payload) throws JsonProcessingException {
         CloudEvent event = CloudEventBuilder
                 .v1()
                 .withId(UUID.randomUUID().toString())
-                .withType("com.example") // TODO: configure via props (+ topic)
-                .withSource(URI.create("http://service")) // TODO: configure via props (+ topic)
+                .withType(this.eventType)
+                .withSource(URI.create(this.eventSource))
                 .withData(this.objectMapper.writeValueAsBytes(payload))
                 .build();
 
-        // TODO: configure topic via props
-        return this.kafkaTemplate.send(new ProducerRecord<String, CloudEvent>("topic", event));
+        return this.kafkaTemplate.send(new ProducerRecord<String, CloudEvent>(this.topic, event));
     }
 }
