@@ -11,11 +11,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.cloudevents.CloudEvent;
-import io.cloudevents.CloudEventData;
 import io.cloudevents.core.builder.CloudEventBuilder;
-import io.cloudevents.jackson.PojoCloudEventDataMapper;
-import io.cloudevents.rw.CloudEventDataMapper;
-import static io.cloudevents.core.data.PojoCloudEventData.wrap;
 
 import lombok.AllArgsConstructor;
 
