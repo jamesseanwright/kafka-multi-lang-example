@@ -6,4 +6,7 @@ build:
 	@# builder, so we make use of the pack CLI
 	@# to build the image directly.
 
-	pack build kafka-example-java --path java --docker-host ${DOCKER_HOST} --buildpack gcr.io/paketo-buildpacks/java --buildpack gcr.io/paketo-buildpacks/spring-boot:5
+	pack build kafka-example-java --path java \
+		--docker-host ${DOCKER_HOST} \
+		--buildpack gcr.io/paketo-buildpacks/java \
+		--buildpack gcr.io/paketo-buildpacks/spring-boot:5
