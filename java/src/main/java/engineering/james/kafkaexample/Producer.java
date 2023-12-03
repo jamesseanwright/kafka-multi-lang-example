@@ -1,6 +1,7 @@
 package engineering.james.kafkaexample;
 
 import java.net.URI;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -23,7 +24,7 @@ public class Producer {
     public <T> CompletableFuture<SendResult<String, CloudEvent>> send(T payload) throws JsonProcessingException {
         CloudEvent event = CloudEventBuilder
                 .v1()
-                .withId("uuid")
+                .withId(UUID.randomUUID().toString())
                 .withType("com.example") // TODO: configure via props (+ topic)
                 .withSource(URI.create("http://service")) // TODO: configure via props (+ topic)
                 .withData(this.objectMapper.writeValueAsBytes(payload))
