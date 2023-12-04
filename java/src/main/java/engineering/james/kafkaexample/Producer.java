@@ -23,8 +23,7 @@ import lombok.RequiredArgsConstructor;
 @ConditionalOnProperty(prefix = "application", name = "producer.enabled")
 @RequiredArgsConstructor
 public class Producer {
-    // TODO: consider providing custom bean for KafkaTemplate<String, CloudEvent>
-    private final KafkaTemplate<String, Object> kafkaTemplate;
+    private final KafkaTemplate<String, CloudEvent> kafkaTemplate;
     private final ObjectMapper objectMapper;
 
     @Value("${application.producer.cloudevents.type}")
@@ -36,7 +35,7 @@ public class Producer {
     @Value("${application.producer.kafka-topic}")
     private String topic;
 
-    public <T> CompletableFuture<SendResult<String, Object>> send(T payload) throws JsonProcessingException {
+    public <T> CompletableFuture<SendResult<String, CloudEvent>> send(T payload) throws JsonProcessingException {
         CloudEvent event = CloudEventBuilder
                 .v1()
                 .withId(UUID.randomUUID().toString())

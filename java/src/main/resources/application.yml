@@ -2,7 +2,4 @@ debug: true
 
 spring:
   kafka:
-    bootstrap-servers: kafka:9092
-    producer:
-      key.serializer: org.apache.kafka.common.serialization.StringSerializer
-      value.serializer: io.cloudevents.kafka.CloudEventSerializer
+    bootstrap-servers: kafka:29092
