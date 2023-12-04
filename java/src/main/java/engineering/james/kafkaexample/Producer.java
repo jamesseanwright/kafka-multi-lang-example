@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
+import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -16,24 +17,26 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.cloudevents.CloudEvent;
 import io.cloudevents.core.builder.CloudEventBuilder;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
-@AllArgsConstructor
+@Component
 @ConditionalOnProperty(prefix = "application", name = "producer.enabled")
+@RequiredArgsConstructor
 public class Producer {
-    private final KafkaTemplate<String, CloudEvent> kafkaTemplate;
+    // TODO: consider providing custom bean for KafkaTemplate<String, CloudEvent>
+    private final KafkaTemplate<String, Object> kafkaTemplate;
     private final ObjectMapper objectMapper;
 
     @Value("${application.producer.cloudevents.type}")
-    private final String eventType;
+    private String eventType;
 
-    @Value("${application.producer.cloudevent.source}")
-    private final String eventSource;
+    @Value("${application.producer.cloudevents.source}")
+    private String eventSource;
 
     @Value("${application.producer.kafka-topic}")
-    private final String topic;
+    private String topic;
 
-    public <T> CompletableFuture<SendResult<String, CloudEvent>> send(T payload) throws JsonProcessingException {
+    public <T> CompletableFuture<SendResult<String, Object>> send(T payload) throws JsonProcessingException {
         CloudEvent event = CloudEventBuilder
                 .v1()
                 .withId(UUID.randomUUID().toString())
@@ -42,6 +45,6 @@ public class Producer {
                 .withData(this.objectMapper.writeValueAsBytes(payload))
                 .build();
 
-        return this.kafkaTemplate.send(new ProducerRecord<String, CloudEvent>(this.topic, event));
+        return this.kafkaTemplate.send(new ProducerRecord<>(this.topic, event));
     }
 }
