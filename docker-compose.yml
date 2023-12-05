@@ -65,3 +65,12 @@ services:
       APPLICATION_CONSUMER_KAFKA_TOPIC: saas-resource-usage
       APPLICATION_CONSUMER_EVENT_DATA_CLASS: engineering.james.kafkaexample.events.ResourceUsage
       SPRING_KAFKA_CONSUMER_GROUP_ID: credit-cost-calculator
+
+  usage_analytics:
+    image: kafka-example-consumer-python
+    depends_on:
+      kafka:
+        condition: service_healthy
+    environment:
+      APPLICATION_CONSUMER_KAFKA_TOPIC: saas-resource-usage
+      APPLICATION_CONSUMER_GROUP_ID: usage-analytics
