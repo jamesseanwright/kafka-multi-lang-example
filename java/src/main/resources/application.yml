@@ -3,3 +3,6 @@ debug: true
 spring:
   kafka:
     bootstrap-servers: kafka:29092
+    consumer:
+      # Would be worth mentioning ErrorHandlingDeserializer in talk...
+      value-deserializer: io.cloudevents.kafka.CloudEventDeserializer

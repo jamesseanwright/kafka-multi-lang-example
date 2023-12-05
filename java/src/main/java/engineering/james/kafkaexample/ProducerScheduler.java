@@ -20,10 +20,10 @@ public class ProducerScheduler {
     public void produce() throws Exception {
         // TODO: handle JsonProcessingException & exceptions thrown by instance method()
         // TODO: await and log success + failure
-        this.producer.send(createPayloadClassInstance());
+        this.producer.send(this.createDataClassInstance());
     }
 
-    private Object createPayloadClassInstance()
+    private Object createDataClassInstance()
             throws ClassNotFoundException, NoSuchMethodException, InstantiationException,
             IllegalAccessException, InvocationTargetException {
         return Class.forName(this.eventDataClass).getConstructor().newInstance();

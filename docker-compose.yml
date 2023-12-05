@@ -4,23 +4,6 @@ services:
     environment:
       ALLOW_ANONYMOUS_LOGIN: yes
 
-  akhq:
-    image: tchiotludo/akhq
-    restart: unless-stopped
-    depends_on:
-      kafka:
-        condition: service_healthy
-    environment:
-      AKHQ_CONFIGURATION: |
-        akhq:
-          connections:
-            docker-kafka-server:
-              properties:
-                bootstrap.servers: "kafka:29092"
-
-    ports:
-      - 8080:8080
-
   kafka:
     image: bitnami/kafka:3.6
     environment:
@@ -38,6 +21,23 @@ services:
       timeout: 10s
       retries: 10
 
+  akhq:
+    image: tchiotludo/akhq
+    restart: unless-stopped
+    depends_on:
+      kafka:
+        condition: service_healthy
+    environment:
+      AKHQ_CONFIGURATION: |
+        akhq:
+          connections:
+            docker-kafka-server:
+              properties:
+                bootstrap.servers: "kafka:29092"
+
+    ports:
+      - 8080:8080
+
   etl:
     image: kafka-example-java
     depends_on:
@@ -49,3 +49,19 @@ services:
       APPLICATION_PRODUCER_CLOUDEVENTS_SOURCE: https://matillion-etl
       APPLICATION_PRODUCER_KAFKA_TOPIC: saas-resource-usage
       APPLICATION_PRODUCER_EVENT_DATA_CLASS: engineering.james.kafkaexample.events.ResourceUsage
+
+  credit_cost_calculator:
+    image: kafka-example-java
+    depends_on:
+      kafka:
+        condition: service_healthy
+    environment:
+      APPLICATION_PRODUCER_ENABLED: true
+      APPLICATION_PRODUCER_CLOUDEVENTS_TYPE: com.matillion.credit-charge
+      APPLICATION_PRODUCER_CLOUDEVENTS_SOURCE: https://credit-cost-calculator
+      APPLICATION_PRODUCER_EVENT_DATA_CLASS: engineering.james.kafkaexample.events.CreditCharge
+      APPLICATION_PRODUCER_KAFKA_TOPIC: saas-credit-charges
+      APPLICATION_CONSUMER_ENABLED: true
+      APPLICATION_CONSUMER_KAFKA_TOPIC: saas-resource-usage
+      APPLICATION_CONSUMER_EVENT_DATA_CLASS: engineering.james.kafkaexample.events.ResourceUsage
+      SPRING_KAFKA_CONSUMER_GROUP_ID: credit-cost-calculator
