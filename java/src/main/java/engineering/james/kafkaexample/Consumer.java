@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import engineering.james.kafkaexample.events.CreditCharge;
-import engineering.james.kafkaexample.events.Event;
 import engineering.james.kafkaexample.events.ResourceUsage;
 import io.cloudevents.CloudEvent;
 import static io.cloudevents.core.CloudEventUtils.mapData;
@@ -24,6 +23,9 @@ import lombok.RequiredArgsConstructor;
 public class Consumer {
     private final ObjectMapper objectMapper;
     private final Logger logger = LoggerFactory.getLogger(Consumer.class);
+
+    private static final String RESOURCE_USAGE_CLOUD_EVENT_TYPE = "com.matillion.resource-usage";
+    private static final String CREDIT_CHARGE_CLOUD_EVENT_TYPE = "com.matillion.credit-charge";
 
     @KafkaListener(topics = "${application.consumer.kafka-topic}")
     public void listen(CloudEvent event) {
@@ -40,11 +42,10 @@ public class Consumer {
 
     private Class<?> getEventDataClass(String cloudEventType) {
         switch (cloudEventType) {
-            // TODO: constants
-            case "com.matillion.resource-usage":
+            case RESOURCE_USAGE_CLOUD_EVENT_TYPE:
                 return ResourceUsage.class;
 
-            case "com.matillion.credit-charge":
+            case CREDIT_CHARGE_CLOUD_EVENT_TYPE:
                 return CreditCharge.class;
 
             default:
