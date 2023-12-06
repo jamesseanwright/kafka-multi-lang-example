@@ -3,7 +3,6 @@
 Example Spring Boot and Python integrations with shared Kafka topics.
 
 
-
 ## Running the project locally
 
 To build and run the service, you'll need to install:
@@ -15,6 +14,7 @@ One these are installed, run `make build` to compile the various service contain
 
 The Compose config also includes [AKHQ](https://github.com/tchiotludo/akhq), which can be accessed at [http://localhost:8080](http://localhost:8080).
 
+
 ## Local development
 
 If you plan to make changes to the codebase, it's recommended to install:
@@ -23,3 +23,8 @@ If you plan to make changes to the codebase, it's recommended to install:
 * Python 3
 
 Running `make setup_dev_env` will install the required Maven and pip dependencies, required for autocompletion and any pertinent dev tooling. You can also run `make format` to format any code changes you make across the Java and Python examples.
+
+
+## Replicated Architecture
+
+![Architecture diagram](/images/architecture.png)
