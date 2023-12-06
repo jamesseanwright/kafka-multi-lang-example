@@ -48,7 +48,7 @@ services:
       APPLICATION_PRODUCER_CLOUDEVENTS_TYPE: com.matillion.resource-usage
       APPLICATION_PRODUCER_CLOUDEVENTS_SOURCE: https://matillion-etl
       APPLICATION_PRODUCER_KAFKA_TOPIC: saas-resource-usage
-      APPLICATION_PRODUCER_EVENT_DATA_CLASS: engineering.james.kafkaexample.events.ResourceUsage
+      APPLICATION_PRODUCER_EVENT_DATA_TYPE: resource-usage
 
   credit_cost_calculator:
     image: kafka-example-java
@@ -59,7 +59,7 @@ services:
       APPLICATION_PRODUCER_ENABLED: true
       APPLICATION_PRODUCER_CLOUDEVENTS_TYPE: com.matillion.credit-charge
       APPLICATION_PRODUCER_CLOUDEVENTS_SOURCE: https://credit-cost-calculator
-      APPLICATION_PRODUCER_EVENT_DATA_CLASS: engineering.james.kafkaexample.events.CreditCharge
+      APPLICATION_PRODUCER_EVENT_DATA_TYPE: credit-charge
       APPLICATION_PRODUCER_KAFKA_TOPIC: saas-credit-charges
       APPLICATION_CONSUMER_ENABLED: true
       APPLICATION_CONSUMER_KAFKA_TOPIC: saas-resource-usage

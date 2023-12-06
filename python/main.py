@@ -25,7 +25,7 @@ async def consume():
     try:
         async for record in consumer:
             cloudevent = from_binary(to_message(record))
-            logger.info(cloudevent)
+            logger.info(cloudevent.data)
     finally:
         await consumer.stop()
 

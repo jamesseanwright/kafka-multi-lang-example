@@ -1,5 +1,5 @@
 package engineering.james.kafkaexample.events;
 
-public record CreditCharge() {
+public record CreditCharge() implements Event {
 
 }
