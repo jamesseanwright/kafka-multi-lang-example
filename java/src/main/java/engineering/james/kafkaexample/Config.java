@@ -20,7 +20,12 @@ public class Config {
         return new ObjectMapper();
     }
 
-    // TODO: explain
+    // The default kafkaTemplate bean provided by spring-kafka
+    // is of type KafkaTemplate<Integer, String>, using
+    // IntegerSerializer and StringSerializer for the message
+    // key and value respectively; this is incompatible with
+    // CloudEvents as the key will be of type String and the value
+    // will inherently be of type CloudEvent, hence the custom bean.
     @Bean
     public KafkaTemplate<String, CloudEvent> kafkaTemplate(KafkaProperties kafkaProperties) {
         ProducerFactory<String, CloudEvent> factory = new DefaultKafkaProducerFactory<>(
