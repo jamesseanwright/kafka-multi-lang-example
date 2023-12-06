@@ -22,4 +22,4 @@ If you plan to make changes to the codebase, it's recommended to install:
 * JDK 17
 * Python 3
 
-Running `make setup_dev_env` will install the required Maven and pip dependencies, required for autocompletion and any pertinent dev tooling.
+Running `make setup_dev_env` will install the required Maven and pip dependencies, required for autocompletion and any pertinent dev tooling. You can also run `make format` to format any code changes you make across the Java and Python examples.
