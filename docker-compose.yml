@@ -71,3 +71,5 @@ services:
     environment:
       APPLICATION_CONSUMER_KAFKA_TOPIC: saas-resource-usage
       APPLICATION_CONSUMER_GROUP_ID: usage-analytics
+
+# TODO: add remaining producers & consumers
