@@ -1,5 +1,3 @@
 package engineering.james.kafkaexample.events;
 
-public interface Event {
-
-}
+public interface Event {}
