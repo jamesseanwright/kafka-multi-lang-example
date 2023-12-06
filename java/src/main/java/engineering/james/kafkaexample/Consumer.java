@@ -40,7 +40,7 @@ public class Consumer {
         }
     }
 
-    private Class<?> getEventDataClass(String cloudEventType) {
+    private Class<?> getEventDataClass(String cloudEventType) throws UnrecognisedCloudEventTypeException {
         switch (cloudEventType) {
             case RESOURCE_USAGE_CLOUD_EVENT_TYPE:
                 return ResourceUsage.class;
@@ -49,8 +49,7 @@ public class Consumer {
                 return CreditCharge.class;
 
             default:
-                // TODO: more specific/customer exception
-                throw new IllegalArgumentException();
+                throw new UnrecognisedCloudEventTypeException(cloudEventType);
         }
     }
 }
