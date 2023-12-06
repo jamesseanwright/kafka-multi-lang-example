@@ -46,7 +46,40 @@ services:
     environment:
       APPLICATION_PRODUCER_ENABLED: true
       APPLICATION_PRODUCER_CLOUDEVENTS_TYPE: com.matillion.resource-usage
-      APPLICATION_PRODUCER_CLOUDEVENTS_SOURCE: https://matillion-etl
+      APPLICATION_PRODUCER_CLOUDEVENTS_SOURCE: app://matillion-etl
+      APPLICATION_PRODUCER_KAFKA_TOPIC: saas-resource-usage
+
+  data_loader:
+    image: kafka-example-java
+    depends_on:
+      kafka:
+        condition: service_healthy
+    environment:
+      APPLICATION_PRODUCER_ENABLED: true
+      APPLICATION_PRODUCER_CLOUDEVENTS_TYPE: com.matillion.resource-usage
+      APPLICATION_PRODUCER_CLOUDEVENTS_SOURCE: app://matillion-data-loader
+      APPLICATION_PRODUCER_KAFKA_TOPIC: saas-resource-usage
+
+  dpc_agent:
+    image: kafka-example-java
+    depends_on:
+      kafka:
+        condition: service_healthy
+    environment:
+      APPLICATION_PRODUCER_ENABLED: true
+      APPLICATION_PRODUCER_CLOUDEVENTS_TYPE: com.matillion.resource-usage
+      APPLICATION_PRODUCER_CLOUDEVENTS_SOURCE: app://dpc-agent?customerID=a787e13b-0485-4ad8-b32d-da684aa15ab1
+      APPLICATION_PRODUCER_KAFKA_TOPIC: saas-resource-usage
+
+  cdc:
+    image: kafka-example-java
+    depends_on:
+      kafka:
+        condition: service_healthy
+    environment:
+      APPLICATION_PRODUCER_ENABLED: true
+      APPLICATION_PRODUCER_CLOUDEVENTS_TYPE: com.matillion.resource-usage
+      APPLICATION_PRODUCER_CLOUDEVENTS_SOURCE: app://matillion-cdc
       APPLICATION_PRODUCER_KAFKA_TOPIC: saas-resource-usage
 
   credit_cost_calculator:
@@ -57,7 +90,7 @@ services:
     environment:
       APPLICATION_PRODUCER_ENABLED: true
       APPLICATION_PRODUCER_CLOUDEVENTS_TYPE: com.matillion.credit-charge
-      APPLICATION_PRODUCER_CLOUDEVENTS_SOURCE: https://credit-cost-calculator
+      APPLICATION_PRODUCER_CLOUDEVENTS_SOURCE: app://credit-cost-calculator
       APPLICATION_PRODUCER_KAFKA_TOPIC: saas-credit-charges
       APPLICATION_CONSUMER_ENABLED: true
       APPLICATION_CONSUMER_KAFKA_TOPIC: saas-resource-usage
@@ -72,4 +105,21 @@ services:
       APPLICATION_CONSUMER_KAFKA_TOPIC: saas-resource-usage
       APPLICATION_CONSUMER_GROUP_ID: usage-analytics
 
-# TODO: add remaining producers & consumers
+  payment_gateway:
+    image: kafka-example-java
+    depends_on:
+      kafka:
+        condition: service_healthy
+    environment:
+      APPLICATION_CONSUMER_ENABLED: true
+      APPLICATION_CONSUMER_KAFKA_TOPIC: saas-credit-charges
+      SPRING_KAFKA_CONSUMER_GROUP_ID: payment-gateway
+
+  spend_forecaster:
+    image: kafka-example-consumer-python
+    depends_on:
+      kafka:
+        condition: service_healthy
+    environment:
+      APPLICATION_CONSUMER_KAFKA_TOPIC: saas-credit-charges
+      APPLICATION_CONSUMER_GROUP_ID: spend-forecaster
