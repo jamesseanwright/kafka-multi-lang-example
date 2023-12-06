@@ -32,9 +32,7 @@ public class Consumer {
                 event,
                 PojoCloudEventDataMapper.from(this.objectMapper, this.getEventDataClass(event.getType())));
 
-            Event data = (Event)eventData.getValue();
-
-            this.logger.info("Received CloudEvent via Kafka:", data.toString());
+            this.logger.info("Received CloudEvent via Kafka: {}", eventData.getValue().toString());
         } catch (Exception e) {
             this.logger.error("Error when deserialising CloudEvent", e);
         }
