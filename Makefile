@@ -4,7 +4,11 @@ endif
 
 setup_dev_env:
 	./java/gradlew build -p java --refresh-dependencies
-	pip install -r python/requirements.txt
+	python3 -m pip install -r python/requirements.txt
+
+format:
+	./java/gradlew spotlessApply -p java
+	python3 -m black python
 
 build:
 	@# Annoyingly, the bootBuildImage Gradle task

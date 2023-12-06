@@ -10,8 +10,10 @@ logger = logging.getLogger(consumer_group_id)
 
 logging.basicConfig(level=logging.INFO, force=True)
 
+
 def to_message(record: ConsumerRecord):
     return KafkaMessage(dict(record.headers), record.key, record.value)
+
 
 async def consume():
     consumer = AIOKafkaConsumer(
