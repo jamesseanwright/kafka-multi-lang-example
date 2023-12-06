@@ -2,7 +2,6 @@ ifndef DOCKER_HOST
 	DOCKER_HOST := unix:///var/run/docker.sock
 endif
 
-# TODO: document in README
 setup_dev_env:
 	./java/gradlew build -p java --refresh-dependencies
 	pip install -r python/requirements.txt
