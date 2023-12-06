@@ -1,5 +1,11 @@
 package engineering.james.kafkaexample.events;
 
-public record CreditCharge() implements Event {
+import java.util.UUID;
+
+public record CreditCharge(
+    UUID accountId,
+    String resourceType,
+    double cost
+) implements Event {
 
 }

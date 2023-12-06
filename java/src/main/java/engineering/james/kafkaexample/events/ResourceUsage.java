@@ -1,5 +1,11 @@
 package engineering.james.kafkaexample.events;
 
-public record ResourceUsage() implements Event {
+import java.util.UUID;
+
+public record ResourceUsage(
+    UUID accountId,
+    String pipelineName,
+    double taskHours
+) implements Event {
 
 }
