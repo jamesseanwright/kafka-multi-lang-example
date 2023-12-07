@@ -34,7 +34,6 @@ services:
             docker-kafka-server:
               properties:
                 bootstrap.servers: "kafka:29092"
-
     ports:
       - 8080:8080
 

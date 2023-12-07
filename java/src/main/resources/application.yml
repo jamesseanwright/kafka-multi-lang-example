@@ -4,5 +4,6 @@ spring:
   kafka:
     bootstrap-servers: kafka:29092
     consumer:
-      # Would be worth mentioning ErrorHandlingDeserializer in talk...
+      # Alternatively, org.springframework.kafka.support.serializer.ErrorHandlingDeserializer + delegate
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: io.cloudevents.kafka.CloudEventDeserializer
